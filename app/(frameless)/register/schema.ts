@@ -40,6 +40,7 @@ export const formParser = z
       .string({ message: "Contraseña inválida" })
       .min(1, { message: "Contraseña inválida" }),
   })
+  .strict()
   .refine(
     ({ password, passwordConfirmation }) => password === passwordConfirmation,
     {
