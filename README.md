@@ -38,6 +38,10 @@ npx prisma generate
 npx prisma db push
 npx prisma db seed
 ```
+Nota: Para ejecutar el comando de `seed`, debes tener preinstalado `ts-node` de manera global, dado que no es parte del proyecto en sí. Para esto puedes ejecutar el siguiente comando en cualquier terminal (no necesariamente dentro del proyecto):
+```bash
+npm install -g ts-node
+```
 
 4. Ejecutar el proyecto en modo development:
 Por defecto, se ejecutará en `http://localhost:80`.
