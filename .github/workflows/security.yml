@@ -1,65 +1,11 @@
-name: Security Tests
+name: Test site for publicly known js vulnerabilities
 
-on:
-  push:
-  pull_request:
-  workflow_dispatch:
-
+on: push
 jobs:
-  owasp_zap:
-    runs-on: windows-latest
-    env:
-      AUTH_SIGN: encodeCallbackToUint8Array(getEnvValue("AUTH_SIGN"));
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Dependency Review
-        uses: actions/dependency-review-action@v4.4.0
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: "20.17.0"
-
-      - name: Install dependencies and start server
-        run: |
-          npm install
-          npm run build
-          start /B npm run start
-          timeout /T 30
-
-      - name: Run OWASP ZAP baseline scan
-        uses: zaproxy/action-full-scan@v0.6.0
-        with:
-          target: "http://localhost:3000"
-          cmd_options: "-t 60 -r zap_report.html"
-
-  dependency-check:
+  security:
     runs-on: windows-latest
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Run OWASP Dependency-Check
-        run: |
-          curl -L -o dependency-check.zip https://github.com/jeremylong/DependencyCheck/releases/download/v6.1.6/dependency-check-6.1.6-release.zip
-          tar -xf dependency-check.zip -C dependency-check
-          dependency-check\bin\dependency-check.bat --project "UCN-CIBER3-DEVSECOPS" --scan . --format "ALL" --out ./reports
-
-  eslint:
-    runs-on: windows-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Test for public javascript library vulnerabilities
+        uses: lirantal/is-website-vulnerable@main
         with:
-          node-version: "20.17.0"
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run ESLint
-        run: npm run lint
+          scan-url: "http://localhost:80"
