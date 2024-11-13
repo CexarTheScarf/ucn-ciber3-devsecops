@@ -1,0 +1,58 @@
+name: Security Tests # Nombre del workflow
+
+on: [push, pull_request] # Eventos en el cual se ejecutara el workflow
+
+jobs: # Lista de trabajos del workflow
+  owasp_zap: # Escaneo con owasp
+    runs-on: windows-latest
+    steps: # Pasos que se realizaran en el trabajo
+      - name: Check out code
+        uses: actions/checkout@v2 # Descarga el codigo del repo ඞ
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+
+      - name: Install dependencies and start server
+        run: |
+          npm install  # Instala dependencias de Node.js
+          npm run build  # Compila la aplicación
+          npm run start &  # Inicia la aplicación en segundo plano
+          sleep 30  # Espera 30 segundos a que el servidor esté disponible
+
+      - name: Run OWASP ZAP baseline scan
+        uses: zaproxy/action-full-scan@v0.6.0
+        with:
+          target: "http://localhost:80"
+          cmd_options: "-t 60 -r zap_report.html" # Opciones: tiempo de escaneo y formato de reporte
+
+  dependency-check: # Analizador de dependencias
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Run OWASP Dependency-Check
+        run: |
+          docker run --rm \
+            -v "$(pwd):/src" \
+            owasp/dependency-check \
+            --project "Monolithic App" \
+            --scan /src \
+            --format "ALL" \
+            --out /src/reports
+
+  eslint: # Eslint para analizar el code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+
+      - name: Run ESLint
+        run: npm run lint # Ejecuta el comando de ESLint para verificar el código
