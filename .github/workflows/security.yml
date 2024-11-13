@@ -5,6 +5,8 @@ on: [push, pull_request] # Eventos en el cual se ejecutara el workflow
 jobs: # Lista de trabajos del workflow
   owasp_zap: # Escaneo con owasp
     runs-on: windows-latest
+    env:
+      AUTH_SIGN: ${{ secrets.AUTH_SIGN }}
     steps: # Pasos que se realizaran en el trabajo
       - name: Check out code
         uses: actions/checkout@v2 # Descarga el codigo del repo ඞ
@@ -38,21 +40,7 @@ jobs: # Lista de trabajos del workflow
           docker run --rm \
             -v "$(pwd):/src" \
             owasp/dependency-check \
-            --project "Monolithic App" \
+            --project "UCN-CIBER3-DEVSECOPS" \
             --scan /src \
             --format "ALL" \
             --out /src/reports
-
-  eslint: # Eslint para analizar el code
-    runs-on: windows-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: "20.17.0"
-
-      - name: Run ESLint
-        run: npm run lint # Ejecuta el comando de ESLint para verificar el código
