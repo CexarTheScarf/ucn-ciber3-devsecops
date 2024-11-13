@@ -1,0 +1,15 @@
+on:
+  schedule:
+    # Runs every day At 01:00.
+    #- cron:  '0 1 * * *'
+    - cron:  '0 * * * *'
+
+jobs:
+  zap_scan:
+    runs-on: windows-latest
+    name: Scan Cyber III Site
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-full-scan@v0.1.0
+        with:
+          target: 'http://localhost:80'
