@@ -12,7 +12,7 @@ jobs: # Lista de trabajos del workflow
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "16"
+          node-version: "20.17.0"
 
       - name: Install dependencies and start server
         run: |
@@ -28,7 +28,7 @@ jobs: # Lista de trabajos del workflow
           cmd_options: "-t 60 -r zap_report.html" # Opciones: tiempo de escaneo y formato de reporte
 
   dependency-check: # Analizador de dependencias
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -44,7 +44,7 @@ jobs: # Lista de trabajos del workflow
             --out /src/reports
 
   eslint: # Eslint para analizar el code
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -52,7 +52,7 @@ jobs: # Lista de trabajos del workflow
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "16"
+          node-version: "20.17.0"
 
       - name: Run ESLint
         run: npm run lint # Ejecuta el comando de ESLint para verificar el código
