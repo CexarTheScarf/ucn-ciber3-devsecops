@@ -25,7 +25,7 @@ const contactItems: ItemImage[] = [
     },
     title: "Contacto",
     description:
-      "Carlos Manzano, Walter Aracibia. Slavko Bogdanic, José Carrillo, César Muñoz & Gabriel Zuleta.",
+      "Carlos Manzano, Walter Aracibia, Slavko Bogdanic, José Carrillo, César Muñoz & Gabriel Zuleta.",
     paragarph: true,
   }
 ];
