@@ -11,3 +11,8 @@ jobs:
         uses: lirantal/is-website-vulnerable@main
         with:
           scan-url: "http://192.168.1.194:80"
+
+      - name: ZAP Scan
+        uses: zaproxy/action-baseline@v0.13.0
+        with:
+          target: "https://www.zaproxy.org"
