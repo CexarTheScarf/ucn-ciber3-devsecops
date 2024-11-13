@@ -1,4 +1,4 @@
-name: Test site for publicly known js vulnerabilities
+name: Sufrimiento
 
 on:
   push:
@@ -10,4 +10,4 @@ jobs:
       - name: Test for public javascript library vulnerabilities
         uses: lirantal/is-website-vulnerable@main
         with:
-          scan-url: "http://localhost:80"
+          scan-url: "http://192.168.1.194:80"
