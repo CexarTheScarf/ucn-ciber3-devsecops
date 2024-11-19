@@ -8,7 +8,7 @@ const createJestConfig = nextJest({
 
 const customJestConfig: Config = {
   clearMocks: true,
-  testEnvironment: "jsdom", // Cambiar a "node" si pruebas solo backend
+  testEnvironment: "node", // Cambiar a "node" si pruebas solo backend
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"], // Configuración inicial para Jest
   moduleNameMapper: {
     "^@/components/(.*)$": "<rootDir>/components/$1",
