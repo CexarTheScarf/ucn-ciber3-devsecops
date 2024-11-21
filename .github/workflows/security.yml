@@ -22,12 +22,6 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # Set up Prisma database (using SQLite for example)
-      - name: Set up Database
-        run: |
-          npx prisma db push
-          npx prisma generate
-
       # Start the project (in the background)
       - name: Start Project
         run: npm run dev &
