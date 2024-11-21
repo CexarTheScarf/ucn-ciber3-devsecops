@@ -12,6 +12,7 @@ type SignInProps = z.infer<typeof formParser>;
 
 export default ServerOperationFactory<SignInProps>(
   async ({ data: { name, email, password }, ThrowHTTPException }) => {
+    console.log(email);
     const userByEmail = await prisma.user.findUnique({ where: { email } });
     if (userByEmail)
       return ThrowHTTPException(

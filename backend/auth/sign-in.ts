@@ -12,9 +12,16 @@ type SignInProps = {
 
 export default ServerOperationFactory<SignInProps>(
   async ({ data: { email, password }, ThrowHTTPException }) => {
-
     console.log("Searching for user", email);
-    const user = await prisma.user.findUnique({ where: { email } });
+    let user;
+
+    try {
+      user = await prisma.user.findUnique({ where: { email } });
+    } catch (error) {
+      console.log("AAAAAAAAAAAAA");
+      console.error("Error al buscar el usuario:", error);
+      // Puedes manejar el error de alguna otra forma, si es necesario
+    }
     console.log("User found:", user);
 
     if (!user)
@@ -22,6 +29,8 @@ export default ServerOperationFactory<SignInProps>(
         "email",
         "password",
       ]);
+
+    console.log("despues user");
 
     if (!compareHash(password, user.hashedPassword))
       return ThrowHTTPException("Credenciales inválidas", [

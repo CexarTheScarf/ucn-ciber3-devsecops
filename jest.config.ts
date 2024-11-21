@@ -16,6 +16,7 @@ const customJestConfig: Config = {
     "^@/lib/(.*)$": "<rootDir>/lib/$1",
     "^@/__mocks__/(.*)$": "<rootDir>/__mocks__/$1",
   },
+
   coverageProvider: "v8", // Para obtener reportes de cobertura
 };
 
