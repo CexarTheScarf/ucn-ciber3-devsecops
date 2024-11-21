@@ -3,11 +3,36 @@ name: Sufrimiento
 on:
   push:
   workflow_dispatch:
+
 jobs:
   security:
     runs-on: ubuntu-latest
     steps:
-      - name: ZAP Scan
-        uses: zaproxy/action-baseline@v0.13.0
+      # Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          target: "http://192.168.1.194:80"
+          node-version: "18"
+
+      # Install dependencies
+      - name: Install Dependencies
+        run: npm install
+
+      # Set up Prisma database (using SQLite for example)
+      - name: Set up Database
+        run: |
+          npx prisma db push
+          npx prisma generate
+
+      # Start the project (in the background)
+      - name: Start Project
+        run: npm run dev &
+
+      # Wait for the server to be ready
+      - name: Wait for Server
+        run: sleep 20 # Adjust this time as needed for server startup
+
