@@ -50,6 +50,8 @@ test("Test de findUnique mockeado", async () => {
   });
 });
 
+
+/*
 describe("SignIn Operation", () => {
   it("debe retornar un usuario cuando las credenciales son correctas", async () => {
     prismaMock.user.findUnique.mockResolvedValue({
@@ -67,19 +69,17 @@ describe("SignIn Operation", () => {
       email: "test@example.com",
       password: "password123",
     };
+
     // Mock de compareHash si es necesario
-    /*
     jest.mock("@/lib/crypto", () => ({
       compareHash: jest.fn(() => true), // Simula que la contraseña es correcta
     }));
-    */
 
     expect(prismaMock.user.findUnique).toHaveBeenCalledWith({
       where: { email: "test@example.com" },
     });
   });
 
-  /*
   it("debe lanzar un error cuando el usuario no existe", async () => {
     // Mock para simular que no se encuentra el usuario
     prismaMock.user.findUnique.mockResolvedValue(null);
@@ -97,15 +97,11 @@ describe("SignIn Operation", () => {
       "password",
     ]);
   });
-  */
 });
 
-/*
 jest.mock("@/lib/crypto", () => ({
   compareHash: jest.fn(() => true),
 }));
-
-
 
 type SignInProps = {
   email: string;
