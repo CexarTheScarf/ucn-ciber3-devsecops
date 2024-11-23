@@ -1,5 +1,6 @@
 import prisma from "@/lib/db";
 import { obtainUser } from "../auth/sign-in";
+import signIn from "../auth/sign-in";
 
 describe("Pruebas con prisma mockeado", () => {
   it("Debería llamar a user.findMany", async () => {
@@ -36,5 +37,25 @@ describe("Pruebas con prisma mockeado", () => {
     (prisma.user.findUnique as jest.Mock).mockResolvedValue(existingUser);
     const result = await obtainUser("hello@prisma.io");
     console.log(result);
+  });
+
+  it("Debería retornar error", async () => {
+    (prisma.user.findUnique as jest.Mock).mockResolvedValue(null);
+
+    const expectedError = {
+      success: false,
+      data: null,
+      errorVariables: ["email", "password"],
+      message: "Credenciales inválidas",
+    };
+
+    // Llama a signIn y verifica la respuesta
+    const result = await signIn({
+      email: "invalid@prisma.io",
+      password: "*NotPassword123",
+    });
+
+    // Verifica que la respuesta sea igual al error esperado
+    expect(result).toEqual(expectedError);
   });
 });
