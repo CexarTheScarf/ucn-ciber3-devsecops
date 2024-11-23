@@ -1,5 +1,4 @@
-import { loadEnvConfig } from "@next/env";
-
-// Configurar las variables de entorno de Next.js
-const projectDir = process.cwd();
-loadEnvConfig(projectDir);
+jest.mock("@/lib/db", () => ({
+  __esModule: true,
+  default: jest.requireActual("@/__mocks__/prismaClient").default,
+}));

@@ -2,22 +2,25 @@ import "server-cli-only";
 import { PrismaClient } from "@prisma/client";
 
 const isTestEnvironment = process.env.NODE_ENV === "test";
+console.log(`Is test environment: ${isTestEnvironment}`);
 
-const prismaClientSingleton = () => {
-  return new PrismaClient();
-};
+// Singleton para evitar múltiples instancias en desarrollo
+const prismaClientSingleton = () => new PrismaClient();
 
 declare const globalThis: {
-  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
+  prismaGlobal?: PrismaClient;
 } & typeof global;
 
 // Usa una instancia mockeada si estás en test
-const prisma = isTestEnvironment
-  ? (jest.requireMock("@/lib/db").default as PrismaClient)
-  : (globalThis.prismaGlobal ?? prismaClientSingleton());
+let prisma: PrismaClient;
 
-if (!isTestEnvironment && process.env.NODE_ENV !== "production") {
-  globalThis.prismaGlobal = prisma;
+if (isTestEnvironment) {
+  prisma = jest.requireMock("@/lib/db").default as PrismaClient;
+} else {
+  prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
+  if (process.env.NODE_ENV !== "production") {
+    globalThis.prismaGlobal = prisma;
+  }
 }
 
 export default prisma;

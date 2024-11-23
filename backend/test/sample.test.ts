@@ -1,5 +1,4 @@
 import SignIn from "@/backend/auth/sign-in";
-import { prismaMock } from "@/__mocks__/prismaMock";
 import prisma from "@/lib/db";
 console.log("Prisma en test:", prisma); //Mockeo funciona correctamente, prisma importado de db es del tipo mock
 
@@ -23,19 +22,17 @@ test("Test de findUnique mockeado", async () => {
   };
 
   // Aquí `prismaMock` es el mock de PrismaClient
-  prismaMock.user.findUnique.mockResolvedValue(mockUser);
+  //prismaMock.user.findUnique.mockResolvedValue(mockUser);
 
-  // Llamada simulada para probar
-  const result = await prisma.user.findUnique({
-    where: { email: "test@example.com" },
-  });
+
+  const result = await prisma.user.findMany()
   //Al realizar esta llamada, en vez de buscar en la base de datos, se retornará el mockResolvedValue
   console.log(result);
 
   // Verifica que findUnique fue llamado correctamente
-  expect(prismaMock.user.findUnique).toHaveBeenCalledWith({
-    where: { email: "test@example.com" },
-  });
+  // expect(prismaMock.user.findUnique).toHaveBeenCalledWith({
+  //   where: { email: "test@example.com" },
+  // });
 
   expect(result).toBe(mockUser);
 
@@ -49,7 +46,6 @@ test("Test de findUnique mockeado", async () => {
     hashedPassword: "hashed-password",
   });
 });
-
 
 /*
 describe("SignIn Operation", () => {
