@@ -1,15 +1,23 @@
-console.log("Mock de prima en __mock__ cargado");
-const mockPrismaClient = {
+import { PrismaClient } from "@prisma/client";
+
+// Crea un mock de PrismaClient
+const prismaMock = {
   user: {
-    findUnique: jest.fn(),
+    findMany: jest.fn(),
     create: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
+    findUnique: jest.fn(),
   },
   post: {
     findMany: jest.fn(),
+    create: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
+    findUnique: jest.fn(),
   },
-  // Añade más métodos según sea necesario
-};
+  // Agrega más modelos según tu esquema
+} as unknown as PrismaClient;
 
-const PrismaClientMock = jest.fn(() => mockPrismaClient);
-
-export default PrismaClientMock;
+// Exporta el mock
+export default prismaMock;

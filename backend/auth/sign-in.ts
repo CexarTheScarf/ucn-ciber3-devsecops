@@ -15,13 +15,8 @@ export default ServerOperationFactory<SignInProps>(
     console.log("Searching for user", email);
     let user;
 
-    try {
-      user = await prisma.user.findUnique({ where: { email } });
-    } catch (error) {
-      console.log("AAAAAAAAAAAAA");
-      console.error("Error al buscar el usuario:", error);
-      // Puedes manejar el error de alguna otra forma, si es necesario
-    }
+    user = await prisma.user.findUnique({ where: { email } });
+
     console.log("User found:", user);
 
     if (!user)
@@ -49,3 +44,7 @@ export default ServerOperationFactory<SignInProps>(
     redirect(GetAuthCallack());
   },
 );
+
+export async function obtainUser(email: string) {
+  return await prisma.user.findUnique({ where: { email } });
+}
