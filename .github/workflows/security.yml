@@ -2,7 +2,6 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: main, securityTesting
   pull_request:
     branches: main
 
