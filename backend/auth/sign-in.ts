@@ -12,20 +12,13 @@ type SignInProps = {
 
 export default ServerOperationFactory<SignInProps>(
   async ({ data: { email, password }, ThrowHTTPException }) => {
-    console.log("Searching for user", email);
     let user;
-
     user = await prisma.user.findUnique({ where: { email } });
-
-    console.log("User found:", user);
-
     if (!user)
       return ThrowHTTPException("Credenciales inválidas", [
         "email",
         "password",
       ]);
-
-    console.log("despues user");
 
     if (!compareHash(password, user.hashedPassword))
       return ThrowHTTPException("Credenciales inválidas", [
