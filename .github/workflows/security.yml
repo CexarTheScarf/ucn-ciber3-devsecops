@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: main
+    branches: main, securityTesting
   pull_request:
     branches: main
 
@@ -29,5 +29,3 @@ jobs:
 
       - name: Run test
         run: npm test
-
-        
