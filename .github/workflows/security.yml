@@ -1,0 +1,30 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+  pull_request:
+    branches: main
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.17.0"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Start Project
+        run: npm run dev &
+
+      - name: Wait for Server
+        run: sleep 20
+
+      - name: Run test
+        run: npm test
