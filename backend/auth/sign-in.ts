@@ -12,19 +12,27 @@ type SignInProps = {
 
 export default ServerOperationFactory<SignInProps>(
   async ({ data: { email, password }, ThrowHTTPException }) => {
-    let user;
-    user = await prisma.user.findUnique({ where: { email } });
+
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: { email: true, id: true, hashedPassword: true },
+    });
+
+
     if (!user)
       return ThrowHTTPException("Credenciales inválidas", [
         "email",
         "password",
       ]);
 
-    if (!compareHash(password, user.hashedPassword))
+    if (!compareHash(password, user.hashedPassword)) {
+      console.warn("Should send a user alert here"); // TODO: Send user alert
+
       return ThrowHTTPException("Credenciales inválidas", [
         "email",
         "password",
       ]);
+    }
 
     const cookieSuccess = await SetAuthCookie({
       email: user.email,
